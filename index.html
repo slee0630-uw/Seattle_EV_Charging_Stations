@@ -6,278 +6,75 @@
     <meta name="robots" content="noindex, nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
+
+    <!-- Mapbox -->
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.js"></script>
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.css" rel="stylesheet" />
 
-    <style>
-      body {
-        color: #404040;
-        font: 400 15px/22px 'Source Sans Pro','Helvetica Neue',sans-serif;
-        margin: 0;
-        padding: 0;
-      }
-      * { box-sizing: border-box; }
+    <!-- Turf -->
+    <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
 
-      .sidebar {
-        position: absolute;
-        width: 33.3333%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        border-right: 1px solid rgb(0 0 0 / 25%);
-      }
-
-      .pad2 { padding: 20px; }
-
-      .map {
-        position: absolute;
-        left: 33.3333%;
-        width: 66.6666%;
-        top: 0;
-        bottom: 0;
-      }
-
-      h1 {
-        font-size: 22px;
-        margin: 0;
-        font-weight: 400;
-        line-height: 20px;
-        padding: 20px 2px;
-      }
-
-      .heading {
-        background-color: #4b2e83;
-        color: #fff;
-        border-bottom: 1px solid #eee;
-        min-height: 60px;
-        line-height: 60px;
-        padding: 0 10px;
-      }
-
-      .listings {
-        height: 100%;
-        overflow: auto;
-        padding-bottom: 60px;
-      }
-
-      .listings .item {
-        border-bottom: 1px solid #eee;
-        padding: 10px;
-        text-decoration: none;
-      }
-
-      .listings .item.active {
-        background-color: #f8f8f8;
-      }
-
-      /* add icon for ev marker */
-      .marker { 
-        border: none;
-        cursor: pointer;
-        height: 56px;
-        width: 56px;
-        background-image: url('./marker.png');
-        background-size: cover;
-      }
-
-      .mapboxgl-popup {
-        padding-bottom: 50px;
-      }
-
-      .mapboxgl-popup-close-button {
-        display: none;
-      }
-
-      .mapboxgl-popup-content {
-        font: 400 15px/22px 'Source Sans Pro','Helvetica Neue',sans-serif;
-        padding: 0;
-        width: 180px;
-      }
-
-      .mapboxgl-popup-content h3 {
-        background: #4b2e83;
-        color: #fff;
-        margin: -15px 0 0;
-        padding: 10px;
-      }
-
-      /* Tooltip container */
-      .item {
-        position: relative;
-      }
-
-      .tooltip {
-        display: none;
-        position: absolute;
-        left: 105%;
-        top: 10px;
-        background: #4b2e83;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 14px;
-        white-space: nowrap;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        z-index: 10;
-      }
-
-      .item:hover .tooltip {
-        display: block;
-      }
-
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <div class="sidebar">
       <div class="heading">
         <h1>Our locations</h1>
+        <button id="filterToggleBtn" class="filter-toggle-btn" aria-label="Toggle filters">
+            Filter
+        </button>
+        
       </div>
 
+      <!-- Filters -->
+      <div id="filters" class = "collapsed">
+        <h3>Filter</h3>
 
+        <label>
+          Availability:
+          <select id="availabilityFilter">
+            <option value="all">All</option>
+            <option value="available">Available only</option>
+            <option value="unavailable">Unavailable / Planned</option>
+          </select>
+        </label>
+
+        <label>
+          Price:
+          <select id="priceFilter">
+            <option value="all">All</option>
+            <option value="free">Free only</option>
+            <option value="paid">Paid only</option>
+          </select>
+        </label>
+
+        <label>
+          Max distance (km):
+          <select id="distanceFilter">
+            <option value="0">No limit</option>
+            <option value="1">1 miles</option>
+            <option value="5">5 miles</option>
+            <option value="10">10 miles</option>
+          </select>
+        </label>
+
+        <button id="useLocationBtn">Use My Location</button>
+      </div>
 
       <div id="listings" class="listings"></div>
     </div>
 
     <div id="map" class="map"></div>
 
-    <script>
-      mapboxgl.accessToken = 'pk.eyJ1IjoiaGlldXRyYW4yIiwiYSI6ImNtaGVkdnNvNTBkNG0ybXExNjFobWFpMm8ifQ.csZ4K-7ctmQ5pw29u2U5Pw';
+    <div class="zoom-controls">
+        <button id="zoomInBtn">+</button>
+        <button id="zoomOutBtn">−</button>
+    </div>
 
-      // GeoJSON file
-      const stores = './station.geojson';
-
-      const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/light-v11',
-        center: [-122.335167, 47.608013],  // Seattle center
-        zoom: 11, 
-        scrollZoom: false
-      });
-
-      map.on('load', async () => {
-
-        const response = await fetch(stores);
-        const data = await response.json();
-
-        // Add unique IDs
-        data.features.forEach((feature, i) => {
-          feature.properties.id = i;
-        });
-
-        const storesData = data;
-
-        //  Add the source
-        map.addSource('places', {
-          type: 'geojson',
-          data: storesData
-        });
-
-        //  Build sidebar + markers
-        buildLocationList(storesData);
-        addMarkers(storesData);
-    
-
-      });
-
-      function addMarkers(storesData) {
-        for (const marker of storesData.features) {
-          const el = document.createElement('div');
-          el.id = `marker-${marker.properties.id}`;
-          el.className = 'marker';
-
-          new mapboxgl.Marker(el, { offset: [0, -23] })
-            .setLngLat(marker.geometry.coordinates)
-            .addTo(map);
-
-          el.addEventListener('click', (e) => {
-            flyToStore(marker);
-            createPopUp(marker);
-
-            const activeItem = document.getElementsByClassName('active');
-            e.stopPropagation();
-
-            if (activeItem[0]) {
-              activeItem[0].classList.remove('active');
-            }
-            const listing = document.getElementById(`listing-${marker.properties.id}`);
-            listing.classList.add('active');
-          });
-        }
-      }
-
-      function buildLocationList(storesData) {
-        for (const store of storesData.features) {
-          const listings = document.getElementById('listings');
-          const listing = listings.appendChild(document.createElement('div'));
-          listing.id = `listing-${store.properties.id}`;
-          listing.className = 'item';
-
-          const link = listing.appendChild(document.createElement('a'));
-          link.href = '#';
-          link.className = 'title';
-
-
-          link.innerHTML = store.properties.Station_Name || "No address";
-
-          const details = listing.appendChild(document.createElement('div'));
-          details.innerHTML = store.properties.city || "";
-
-          const tooltip = listing.appendChild(document.createElement('div'));
-          tooltip.className = 'tooltip';
-
-          const address = store.properties.Address || "No address";
-          const phone = store.properties.Phone_Number || "No number";
-
-          tooltip.innerHTML = `
-            <strong>${address}</strong><br>
-            ${phone}
-          `;
-
-          link.addEventListener('click', function () {
-            flyToStore(store);
-            createPopUp(store);
-
-            const activeItem = document.getElementsByClassName('active');
-            if (activeItem[0]) {
-              activeItem[0].classList.remove('active');
-            }
-            this.parentNode.classList.add('active');
-          });
-        }
-      }
-
-      function flyToStore(currentFeature) {
-        map.flyTo({
-          center: currentFeature.geometry.coordinates,
-          zoom: 15
-        });
-      }
-
-      function createPopUp(currentFeature) {
-        const popUps = document.getElementsByClassName('mapboxgl-popup');
-        if (popUps[0]) popUps[0].remove();
-
-        const props = currentFeature.properties;
-
-        const name = props.Station_Name || "Unknown Station";
-        const address = props.Address || "No address available";
-        const phone = props.Phone_Number || "";
-
-        new mapboxgl.Popup({ closeOnClick: false })
-          .setLngLat(currentFeature.geometry.coordinates)
-          .setHTML(`
-            <h3>${name}</h3>
-            <h4 style="margin:0; padding:2px 6px;">
-              ${address}<br>
-              ${phone}
-            </h4>
-          `)
-          .addTo(map);
-      }
-
-    </script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
 
   </body>
 </html>
