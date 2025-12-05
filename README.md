@@ -2,7 +2,7 @@
 ## Description
 For our final project in GEOG 328, we decided to develop a web GIS application that highlights EV Charging Stations in Seattle, WA. The goal of our project is to visualize the spatial distribution of electric vehicle (EV) charging stations across Seattle and provide detailed information about each station to users (including the power level of each charger) to allow EV drivers to easily discover charging stations based on their specific needs. 
 
-*ADD LINK TO MAP HERE*
+[Check out our map HERE!](https://slee0630-uw.github.io/Seattle_EV_Charging_Stations/index.html#)
 
 ## Favicon
 <p align="center">
