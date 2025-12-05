@@ -42,6 +42,11 @@ If a user finds a location on the map that they would like to navigate to, they 
 Our web map uses location data published by Seattle City Light through its Public EV Charging Location ArcGIS map. The dataset consists of geospatial point features representing SCL-operated EV charging sites, along with associated attributes such as station details and charger types. The information is provided through a hosted ArcGIS feature layer and is meant for general reference as the City may update or modify the data at any time as needed.
 
 ## Applied Libraries, Plugins, and Webservices
+### Mapbox GL JS
+We used Mapbox GL JS to create the actual map and we were able to add a basemap and format the visuals of Seattle and the charging stations.
+### Turf.js
+We used Turf.js to track current location to help users find stations relative to their real-time location.
+### 
 
 ## Acknowledgements
 
