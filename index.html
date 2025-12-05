@@ -20,17 +20,26 @@
   </head>
 
   <body>
+
+    <!-- Navigation Bar -->
+    <nav class="top-nav">
+      <a href="index.html" class="nav-logo">Seattle EV Charging</a>
+      <div class="nav-links">
+        <a href="index.html" class="active">Find a Charger</a>
+        <a href="about.html">About</a>
+      </div>
+    </nav>
+
     <div class="sidebar">
       <div class="heading">
         <h1>Our locations</h1>
         <button id="filterToggleBtn" class="filter-toggle-btn" aria-label="Toggle filters">
             Filter
         </button>
-        
       </div>
 
       <!-- Filters -->
-      <div id="filters" class = "collapsed">
+      <div id="filters" class="collapsed">
         <h3>Filter</h3>
 
         <div id="typeButtons" class="type-buttons">
@@ -98,8 +107,7 @@
             <img src="./favicon/dc.png" class="legend-icon">
             <span>DC Fast</span>
         </div>
-            </div>
-      
+    </div>
 
     <!-- Custom JS -->
     <script src="script.js"></script>
