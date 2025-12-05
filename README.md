@@ -5,8 +5,7 @@ For our final project in GEOG 328, we decided to develop a web GIS application t
 ## Favicon
 <p align="center">
   <img src="favicon/mainn-logo.png" width="50%">
-</p>
-                   
+</p>            
 ## Goals
 Our goal for this web map was to allow EV drivers to easily discover local charging stations in Seattle based on their specific needs. We incoporated a filtering feature that allows users to enter their preferences for charging level (all levels, Standard plug, AC plug, or DC plug), availability, price (paid or free), and distance from their current location (within 1, 5, or 10 miles from them) to provide as seamless an experience as possible for their search. 
 
