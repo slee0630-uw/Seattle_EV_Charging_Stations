@@ -62,13 +62,14 @@ function getStationType(props) {
   return 'other';
 }
 
-// Determine price type for each station
-function getPriceType(props) {
-  const price = (props.EV_Pricing || '').toLowerCase();
-  if (price.includes('free') || price === 'no fee') return 'free';
-  if (price.includes('pay') || price.includes('$') || price.includes('fee')) return 'paid';
-  return 'unknown';
-}
+// Determine charging type for each station
+function getIconForType(stationType) {
+    if (stationType === 'level1') return './favicon/type1.png';
+    if (stationType === 'level2') return './favicon/type2.png';
+    if (stationType === 'dcfast') return './favicon/dc.png';
+    return './favicon/marker.png'; // fallback
+  }
+  
 
 /* Add custom markers to the map */
 function addMarkers(storesData) {
@@ -76,9 +77,12 @@ function addMarkers(storesData) {
     const el = document.createElement('div');
     el.id = `marker-${marker.properties.id}`;
 
-    const priceType = getPriceType(marker.properties);
-    el.className = `marker marker-${priceType}`;
-
+    const stationType = getStationType(marker.properties);
+    const iconPath = getIconForType(stationType);
+    
+    el.className = 'marker';
+    el.style.backgroundImage = `url('${iconPath}')`;
+    
     new mapboxgl.Marker(el, { offset: [0, -23] })
       .setLngLat(marker.geometry.coordinates)
       .addTo(map);
