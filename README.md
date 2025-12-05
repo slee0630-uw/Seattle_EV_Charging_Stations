@@ -6,6 +6,8 @@ For our final project in GEOG 328, we decided to develop a web GIS application t
 Our goal for this web map was to allow EV drivers to easily discover local charging stations in Seattle based on their specific needs. We incoporated a filtering feature that allows users to enter their preferences for charging level (all levels, Standard plug, AC plug, or DC plug), availability, price (paid or free), and distance from their current location (within 1, 5, or 10 miles from them) to provide as seamless an experience as possible for their search. 
 
 ## Main Functions
+When users first open the web map they will see a map of Seattle with various color-coded icons scattered around the city, as well as a list of locations with addresses on the left side of the screen (with a button that allows them to input filters). 
+
 
 ## Data Sources
 
