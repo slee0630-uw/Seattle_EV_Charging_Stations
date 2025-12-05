@@ -70,13 +70,13 @@ body {
 
 /* Free charging station */
 .marker-free {
-    background-image: url('./marker.png');
+    background-image: url('./favicon/marker.png');
     background-size: cover;
 }
 
 /* Paid charging station */
 .marker-paid {
-    background-image: url('./dollars.webp');
+    background-image: url('./favicon/dollars.webp');
     background-size: cover;
 }
 
