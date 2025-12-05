@@ -31,6 +31,12 @@ Here's an example of what results would look like with the following filters app
 
 As you can see, there are two available options, both at Seatac airport. 
 
+If a user sees a location on the map that they would like to navigate to, they can simply click the icon on the map to see the exact address of the charger.
+<p align="center">
+  <img src="images/finalimage4.png" width="75%">
+</p> 
+
+
 
 ## Data Sources
 
@@ -39,3 +45,4 @@ As you can see, there are two available options, both at Seatac airport.
 ## Acknowledgements
 
 ## AI Disclosure
+We used AI (primarily ChatGPT and Claude) to assist in generally understanding our data and to help style our maps. A large use of AI in our project was to help with debugging concerns and for clarifying questions about our development process when we found ourselves a little stuck or confused along the way. AI was used to create our favicon and color-coded icons on the map to help speed up the design process so we could focus on the features of the web map. 
