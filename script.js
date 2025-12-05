@@ -8,12 +8,13 @@ const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/light-v11',
   center: [-122.335167, 47.608013], // Seattle Center
-  zoom: 11,
-  scrollZoom: false
+  zoom: 10,
+  scrollZoom: true
 });
 
 let storesDataGlobal = null;
 let userLocation = null;
+let currentTypeFilter = 'all';
 
 map.on('load', async () => {
     const response = await fetch(stores);
@@ -36,35 +37,66 @@ map.on('load', async () => {
     addMarkers(storesDataGlobal);
 
     setupFilterControls();
+    setupTypeButtons();
     setupZoomButtons();
     setupFilterToggle();
 });
 
+map.on('click', () => {
+    const popUps = document.getElementsByClassName('mapboxgl-popup');
+    if (popUps[0]) popUps[0].remove();
+
+    const activeItem = document.getElementsByClassName('active');
+    if (activeItem[0]) activeItem[0].classList.remove('active');
+});
+
+// Decide what "type" of charger this station is
+function getStationType(props) {
+  const l1 = Number(props.EV_Level1_EVSE_Ports) || 0;
+  const l2 = Number(props.EV_Level2_EVSE_Ports) || 0;
+  const dc = Number(props.EV_DC_Fast_Ports) || 0;
+
+  if (dc > 0) return 'dcfast';      // any DC ports → DC fast
+  if (l2 > 0) return 'level2';      // otherwise any Level 2
+  if (l1 > 0) return 'level1';      // otherwise Level 1
+  return 'other';
+}
+
+// Determine price type for each station
+function getPriceType(props) {
+  const price = (props.EV_Pricing || '').toLowerCase();
+  if (price.includes('free') || price === 'no fee') return 'free';
+  if (price.includes('pay') || price.includes('$') || price.includes('fee')) return 'paid';
+  return 'unknown';
+}
+
 /* Add custom markers to the map */
 function addMarkers(storesData) {
-    for (const marker of storesData.features) {
-        const el = document.createElement('div');
-        el.id = `marker-${marker.properties.id}`;
-        el.className = 'marker';
+  for (const marker of storesData.features) {
+    const el = document.createElement('div');
+    el.id = `marker-${marker.properties.id}`;
 
-        new mapboxgl.Marker(el, { offset: [0, -23] })
-        .setLngLat(marker.geometry.coordinates)
-        .addTo(map);
+    const priceType = getPriceType(marker.properties);
+    el.className = `marker marker-${priceType}`;
 
-        el.addEventListener('click', (e) => {
-        flyToStore(marker);
-        createPopUp(marker);
+    new mapboxgl.Marker(el, { offset: [0, -23] })
+      .setLngLat(marker.geometry.coordinates)
+      .addTo(map);
 
-        const activeItem = document.getElementsByClassName('active');
-        e.stopPropagation();
+    el.addEventListener('click', (e) => {
+      flyToStore(marker);
+      createPopUp(marker);
 
-        if (activeItem[0]) {
-            activeItem[0].classList.remove('active');
-        }
-        const listing = document.getElementById(`listing-${marker.properties.id}`);
-        listing.classList.add('active');
-        });
-    }
+      const activeItem = document.getElementsByClassName('active');
+      e.stopPropagation();
+
+      if (activeItem[0]) {
+        activeItem[0].classList.remove('active');
+      }
+      const listing = document.getElementById(`listing-${marker.properties.id}`);
+      listing.classList.add('active');
+    });
+  }
 }
 
 /* Build sidebar list of EV charging stations */
@@ -233,6 +265,12 @@ function applyFilters() {
         }
         }
 
+        // Filter by charging type (Level1/Level2/DC Fast)
+        const stationType = getStationType(f.properties);
+        if (currentTypeFilter !== 'all') {
+            visible = visible && (stationType === currentTypeFilter);
+        }
+
         // Apply visibility to markers + sidebar list
         markerEl.style.display = visible ? '' : 'none';
         listingEl.style.display = visible ? '' : 'none';
@@ -261,4 +299,23 @@ function setupFilterToggle() {
       filtersPanel.classList.toggle('collapsed');
     });
   }
+}
+
+function setupTypeButtons() {
+  const container = document.getElementById('typeButtons');
+  if (!container) return;
+
+  const buttons = container.querySelectorAll('button');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentTypeFilter = btn.dataset.type; // 'all', 'level1', 'level2', 'dcfast'
+
+      // visual state
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      applyFilters(); // re-run filters whenever type changes
+    });
+  });
 }
