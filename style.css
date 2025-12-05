@@ -166,8 +166,8 @@ body {
 
 .zoom-controls {
     position: absolute;
+    top: 24px;
     right: 16px;
-    bottom: 24px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -225,4 +225,56 @@ body {
 .type-buttons button.active {
   background: #333;
   color: #fff;
+}
+
+/* Map Legend */
+.map-legend {
+    position: absolute;
+    right: 16px;
+    bottom: 24px;
+    z-index: 3;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    min-width: 150px;
+}
+
+.map-legend h3 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-marker {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 6px;
+    box-shadow: 0 0 0 1px #fff, 0px 0px 2px rgba(0,0,0,0.3);
+}
+
+/* Charging Type Colors */
+.type-level1 {
+    background-color: #4b9cd3;  /* Blue */
+}
+
+.type-level2 {
+    background-color: #4bd39c;  /* Green */
+}
+
+.type-dcfast {
+    background-color: #d34b4b;  /* Red */
 }
