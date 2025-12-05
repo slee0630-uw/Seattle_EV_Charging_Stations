@@ -1,1 +1,106 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8" /> <title>Seattle EV Charging Station</title> <meta name="robots" content="noindex, nofollow" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" /> <link rel="icon" type="image/png" href="favicon/marker.png"> <!-- Mapbox --> <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.js"></script> <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.css" rel="stylesheet" /> <!-- Turf --> <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script> <!-- Custom CSS --> <link rel="stylesheet" href="style.css" /> </head> <body> <div class="sidebar"> <div class="heading"> <h1>Our locations</h1> <button id="filterToggleBtn" class="filter-toggle-btn" aria-label="Toggle filters"> Filter </button> </div> <!-- Filters --> <div id="filters" class = "collapsed"> <h3>Filter</h3> <div id="typeButtons" class="type-buttons"> <button data-type="all" class="active">All</button> <button data-type="level1">Standard wall plug</button> <button data-type="level2">AC Plug</button> <button data-type="dcfast">DC Fast</button> </div> <label> Availability: <select id="availabilityFilter"> <option value="all">All</option> <option value="available">Available only</option> <option value="unavailable">Unavailable / Planned</option> </select> </label> <label> Price: <select id="priceFilter"> <option value="all">All</option> <option value="free">Free only</option> <option value="paid">Paid only</option> </select> </label> <label> Max distance (miles): <select id="distanceFilter"> <option value="0">No limit</option> <option value="1">1 miles</option> <option value="5">5 miles</option> <option value="10">10 miles</option> </select> </label> <button id="useLocationBtn">Use My Location</button> </div> <div id="listings" class="listings"></div> </div> <div id="map" class="map"></div> <div class="zoom-controls"> <button id="zoomInBtn">+</button> <button id="zoomOutBtn">−</button> </div> <div class="map-legend"> <h3>Charging Types</h3> <div class="legend-item"> <img src="./favicon/type1.png" class="legend-icon"> <span>Level 1 (Standard Plug)</span> </div> <div class="legend-item"> <img src="./favicon/type2.png" class="legend-icon"> <span>Level 2 (AC Plug)</span> </div> <div class="legend-item"> <img src="./favicon/dc.png" class="legend-icon"> <span>DC Fast</span> </div> </div> <!-- Custom JS --> <script src="script.js"></script> </body> </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Seattle EV Charging Station</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="favicon/marker.png">
+
+  <!-- Mapbox -->
+  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.js"></script>
+  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.css" rel="stylesheet" />
+
+  <!-- Turf -->
+  <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="heading">
+      <h1>Our locations</h1>
+      <button id="filterToggleBtn" class="filter-toggle-btn" aria-label="Toggle filters">
+        Filter
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div id="filters" class="collapsed">
+      <h3>Filter</h3>
+
+      <div id="typeButtons" class="type-buttons">
+        <button data-type="all" class="active">All</button>
+        <button data-type="level1">Standard wall plug</button>
+        <button data-type="level2">AC Plug</button>
+        <button data-type="dcfast">DC Fast</button>
+      </div>
+
+      <label>
+        Availability:
+        <select id="availabilityFilter">
+          <option value="all">All</option>
+          <option value="available">Available only</option>
+          <option value="unavailable">Unavailable / Planned</option>
+        </select>
+      </label>
+
+      <label>
+        Price:
+        <select id="priceFilter">
+          <option value="all">All</option>
+          <option value="free">Free only</option>
+          <option value="paid">Paid only</option>
+        </select>
+      </label>
+
+      <label>
+        Max distance (miles):
+        <select id="distanceFilter">
+          <option value="0">No limit</option>
+          <option value="1">1 miles</option>
+          <option value="5">5 miles</option>
+          <option value="10">10 miles</option>
+        </select>
+      </label>
+
+      <button id="useLocationBtn">Use My Location</button>
+    </div>
+
+    <div id="listings" class="listings"></div>
+  </div>
+
+  <div id="map" class="map"></div>
+
+  <div class="zoom-controls">
+    <button id="zoomInBtn">+</button>
+    <button id="zoomOutBtn">−</button>
+  </div>
+
+  <div class="map-legend">
+    <h3>Charging Types</h3>
+
+    <div class="legend-item">
+      <img src="./favicon/type1.png" class="legend-icon">
+      <span>Level 1 (Standard Plug)</span>
+    </div>
+
+    <div class="legend-item">
+      <img src="./favicon/type2.png" class="legend-icon">
+      <span>Level 2 (AC Plug)</span>
+    </div>
+
+    <div class="legend-item">
+      <img src="./favicon/dc.png" class="legend-icon">
+      <span>DC Fast</span>
+    </div>
+  </div>
+
+  <!-- Custom JS -->
+  <script src="script.js"></script>
+
+</body>
+</html>
