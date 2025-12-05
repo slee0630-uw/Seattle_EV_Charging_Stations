@@ -45,7 +45,7 @@ Our web map uses location data published by Seattle City Light through its Publi
 
 ## Applied Libraries, Plugins, and Webservices
 ### Mapbox GL JS
-We used Mapbox GL JS to create the actual map and we were able to add a basemap and format the visuals of Seattle and the charging stations.
+We implemented our basemap using the Mapbox GL JS library, which allowed us to display our EV charging station data as a set of searchable and clickable points on the map. We also built a dynamic sidebar and popup system: clicking a marker or a list entry shows a custom popup that displays the station name, address, and additional details.
 ### Turf.js
 We used Turf.js to track current location to help users find stations relative to their real-time location.
 ### Mapbox’s basemap service 
