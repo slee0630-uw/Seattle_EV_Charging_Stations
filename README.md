@@ -37,6 +37,7 @@ If a user finds a location on the map that they would like to navigate to, they 
 </p> 
 
 ## Data Sources
+Our web map uses location data published by Seattle City Light through its Public EV Charging Location ArcGIS map. The dataset consists of geospatial point features representing SCL-operated EV charging sites, along with associated attributes such as station details and charger types. The information is provided through a hosted ArcGIS feature layer and is meant for general reference as the City may update or modify the data at any time as needed.
 
 ## Applied Libraries, Plugins, and Webservices
 
