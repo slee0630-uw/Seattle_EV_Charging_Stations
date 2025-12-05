@@ -4,7 +4,7 @@ For our final project in GEOG 328, we decided to develop a web GIS application t
 
 ## Favicon
 <p align="center">
-  <img src="favicon/mainn-logo.png" width="50%">
+  <img src="favicon/mainn-logo-cropped.png" width="50%">
 </p>            
 
 ## Goals
