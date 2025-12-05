@@ -29,14 +29,12 @@ Here's an example of what results would look like with the following filters app
   <img src="images/finalimage3.png" width="75%">
 </p> 
 
-As you can see, there are two available options, both at Seatac airport. 
+As you can see, there are two available options based on these particular filters, both located at or near Seatac airport as denoted by the icons. 
 
-If a user sees a location on the map that they would like to navigate to, they can simply click the icon on the map to see the exact address of the charger.
+If a user finds a location on the map that they would like to navigate to, they can simply click the icon on the map to see the exact address of the charging station.
 <p align="center">
   <img src="images/finalimage4.png" width="75%">
 </p> 
-
-
 
 ## Data Sources
 
